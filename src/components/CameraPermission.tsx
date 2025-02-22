@@ -15,35 +15,33 @@ const CameraPermission = ({ onComplete }: CameraPermissionProps) => {
 
   const requestCamera = async () => {
     setIsRequesting(true);
-    setShowMessage(true);
     
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       stream.getTracks().forEach(track => track.stop());
       
-      // Flash effect
       document.body.classList.add("animate-flash");
       const flash = new Audio("/camera_shutter.mp3");
       await flash.play();
       
+      setIsRequesting(false);
+      setShowMessage(true);
+      
       setTimeout(() => {
         document.body.classList.remove("animate-flash");
-        setShowMessage(false);
         onComplete();
       }, 2000);
       
     } catch (error) {
-      // Interference effect for denied permission
       const interference = new Audio("/interference.mp3");
       await interference.play();
       
+      setIsRequesting(false);
       setShowMessage(true);
+      
       setTimeout(() => {
-        setShowMessage(false);
         onComplete();
       }, 2000);
-    } finally {
-      setIsRequesting(false);
     }
   };
 
@@ -55,7 +53,7 @@ const CameraPermission = ({ onComplete }: CameraPermissionProps) => {
             Para ver la verdad, primero hay que mirar.
           </p>
           <p className="text-ghost-white text-xl">
-            El Fotógrapher quiere verte. ¿Aceptás?
+            El Fotógrapher quierte verte. ¿Aceptás?
           </p>
         </div>
       )}
