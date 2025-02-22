@@ -28,14 +28,6 @@ const Main = () => {
         }}
       />
 
-      {/* Ambient light effect */}
-      <div 
-        className="absolute inset-0 opacity-30"
-        style={{
-          background: 'radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.15), transparent 70%)'
-        }}
-      />
-
       {/* Water damage and wall texture */}
       <div 
         className="absolute inset-0 opacity-20"
@@ -54,23 +46,20 @@ const Main = () => {
 
       {/* Post-its container */}
       <div className="relative z-10 min-h-screen p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-center justify-items-center">
-        {/* Trailer Post-it */}
+        {/* Trailer Photo */}
         <div className="transform rotate-[-2deg] hover:rotate-0 transition-all duration-300">
           <div 
             onClick={() => handlePostItClick("/trailer")}
-            className="w-64 h-64 bg-[#94a3b8]/20 backdrop-blur-sm p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
-            style={{
-              boxShadow: '2px 2px 10px rgba(0,0,0,0.3)',
-              backdropFilter: 'blur(10px)'
-            }}
+            className="w-64 cursor-pointer group relative"
           >
-            <div className="absolute top-0 left-0 w-full h-8 bg-[#94a3b8]/10" />
-            <p className="font-mono text-ghost-white mt-4 transform -rotate-1">
-              "Trailer"
-            </p>
-            <p className="font-mono text-xs text-ghost-white/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300">
-              "Un vistazo a lo que nunca debimos ver..."
-            </p>
+            <img 
+              src="/lovable-uploads/03903497-8640-499a-9909-1ae31d4537ac.png"
+              alt="REC Trailer"
+              className="w-full shadow-xl hover:shadow-2xl transition-all duration-300"
+            />
+            <div className="absolute top-0 left-0 w-full h-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <p className="font-mono text-ghost-white text-xl">Ver Trailer</p>
+            </div>
           </div>
         </div>
         
@@ -78,17 +67,16 @@ const Main = () => {
         <div className="transform rotate-[1deg] hover:rotate-0 transition-all duration-300">
           <div 
             onClick={() => handlePostItClick("/team")}
-            className="w-64 h-64 bg-[#94a3b8]/20 backdrop-blur-sm p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
+            className="w-64 h-64 bg-[#fef3bc] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
             style={{
-              boxShadow: '2px 2px 10px rgba(0,0,0,0.3)',
-              backdropFilter: 'blur(10px)'
+              boxShadow: '2px 2px 10px rgba(0,0,0,0.3)'
             }}
           >
-            <div className="absolute top-0 right-0 w-full h-8 bg-[#94a3b8]/10" />
-            <p className="font-mono text-ghost-white mt-4 transform rotate-1">
+            <div className="absolute top-0 right-0 w-full h-8 bg-[#fff9c4]/50" />
+            <p className="font-mono text-ghost-gray mt-4 transform rotate-1">
               "Equipo"
             </p>
-            <p className="font-mono text-xs text-ghost-white/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300">
+            <p className="font-mono text-xs text-ghost-gray/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300">
               "¿Quién está detrás de todo esto?"
             </p>
           </div>
@@ -98,17 +86,16 @@ const Main = () => {
         <div className="transform rotate-[-1deg] hover:rotate-0 transition-all duration-300">
           <div 
             onClick={() => handlePostItClick("/rights")}
-            className="w-64 h-64 bg-[#94a3b8]/20 backdrop-blur-sm p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
+            className="w-64 h-64 bg-[#fef3bc] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
             style={{
-              boxShadow: '2px 2px 10px rgba(0,0,0,0.3)',
-              backdropFilter: 'blur(10px)'
+              boxShadow: '2px 2px 10px rgba(0,0,0,0.3)'
             }}
           >
-            <div className="absolute top-0 left-0 w-full h-8 bg-[#94a3b8]/10" />
-            <p className="font-mono text-ghost-white mt-4">
+            <div className="absolute top-0 left-0 w-full h-8 bg-[#fff9c4]/50" />
+            <p className="font-mono text-ghost-gray mt-4">
               "Derechos"
             </p>
-            <p className="font-mono text-xs text-ghost-white/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300">
+            <p className="font-mono text-xs text-ghost-gray/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300">
               "Si el arte callejero no tiene dueño..."
             </p>
           </div>
@@ -118,17 +105,16 @@ const Main = () => {
         <div className="transform rotate-[2deg] hover:rotate-0 transition-all duration-300">
           <div 
             onClick={() => handlePostItClick("/contact")}
-            className="w-64 h-64 bg-[#94a3b8]/20 backdrop-blur-sm p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
+            className="w-64 h-64 bg-[#fef3bc] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
             style={{
-              boxShadow: '2px 2px 10px rgba(0,0,0,0.3)',
-              backdropFilter: 'blur(10px)'
+              boxShadow: '2px 2px 10px rgba(0,0,0,0.3)'
             }}
           >
-            <div className="absolute top-0 right-0 w-full h-8 bg-[#94a3b8]/10" />
-            <p className="font-mono text-ghost-white mt-4 transform -rotate-1">
+            <div className="absolute top-0 right-0 w-full h-8 bg-[#fff9c4]/50" />
+            <p className="font-mono text-ghost-gray mt-4 transform -rotate-1">
               "Contacto"
             </p>
-            <p className="font-mono text-xs text-ghost-white/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300">
+            <p className="font-mono text-xs text-ghost-gray/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300">
               "¿Tenés algo que decir?"
             </p>
           </div>
@@ -138,27 +124,27 @@ const Main = () => {
         <div className="transform rotate-[-1.5deg] hover:rotate-0 transition-all duration-300 animate-pulse">
           <div 
             onClick={() => handlePostItClick("/mystery")}
-            className="w-64 h-64 bg-[#94a3b8]/20 backdrop-blur-sm p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
+            className="w-64 h-64 bg-[#fef3bc] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
             style={{
-              boxShadow: '2px 2px 10px rgba(0,0,0,0.3)',
-              backdropFilter: 'blur(10px)'
+              boxShadow: '2px 2px 10px rgba(0,0,0,0.3)'
             }}
           >
-            <div className="absolute top-0 left-0 w-full h-8 bg-[#94a3b8]/10" />
-            <p className="font-mono text-ghost-white mt-4 blur-sm hover:blur-none transition-all duration-500">
+            <div className="absolute top-0 left-0 w-full h-8 bg-[#fff9c4]/50" />
+            <p className="font-mono text-ghost-gray mt-4 blur-sm hover:blur-none transition-all duration-500">
               "🔲"
             </p>
-            <p className="font-mono text-xs text-ghost-white/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300 blur-sm">
+            <p className="font-mono text-xs text-ghost-gray/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300 blur-sm">
               "..."
             </p>
           </div>
         </div>
       </div>
 
-      {/* Background graffiti and details */}
+      {/* Background graffiti and urban art */}
       <div className="absolute inset-0 pointer-events-none">
+        {/* Large graffiti pieces */}
         <div 
-          className="absolute top-1/4 left-1/4 w-96 h-96 opacity-5"
+          className="absolute top-1/4 left-1/4 w-96 h-96 opacity-10"
           style={{
             backgroundImage: "url('/lovable-uploads/7f06db24-c185-4e94-9eb5-69825cfcad19.png')",
             backgroundSize: 'cover',
@@ -166,6 +152,16 @@ const Main = () => {
             transform: 'rotate(15deg)'
           }}
         />
+        
+        {/* Additional urban art elements */}
+        <div className="absolute top-20 right-20 text-[200px] opacity-5 transform -rotate-12 font-bold">
+          RECC
+        </div>
+        <div className="absolute bottom-40 left-20 text-[150px] opacity-5 transform rotate-45 font-bold">
+          X
+        </div>
+        
+        {/* Texture overlays */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#1a2937]/50 to-[#0f172a]/50" />
       </div>
 
