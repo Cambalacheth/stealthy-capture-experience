@@ -26,8 +26,8 @@ const Index = () => {
           onClick={handleLogoClick}
           className="cursor-pointer transform hover:scale-105 transition-transform duration-300"
         >
-          <div className="w-64 h-32 md:w-96 md:h-48 bg-ghost-black/80 border-2 border-ghost-white/20 rounded-xl flex flex-col items-center justify-center hover:animate-glitch backdrop-blur-sm shadow-lg">
-            <span className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-ghost-white via-ghost-white/80 to-ghost-white/60 bg-clip-text text-transparent">
+          <div className="w-72 h-40 md:w-[28rem] md:h-56 bg-ghost-black/80 border-2 border-ghost-white/20 rounded-xl flex flex-col items-center justify-center hover:animate-glitch backdrop-blur-sm shadow-lg">
+            <span className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-ghost-white via-ghost-white/80 to-ghost-white/60 bg-clip-text text-transparent px-4">
               El Fotógrapher
             </span>
             <div className="w-16 h-1 bg-ghost-white/20 mt-4 rounded-full" />
