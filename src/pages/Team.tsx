@@ -9,17 +9,36 @@ const Team = () => {
           <Users className="w-8 h-8 text-ghost-white" />
           <h1 className="text-4xl font-bold text-ghost-white">El Equipo</h1>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((member) => (
-            <div
-              key={member}
-              className="bg-ghost-gray/20 rounded-lg p-4 border border-ghost-white/10"
-            >
-              <div className="w-24 h-24 mx-auto rounded-full bg-ghost-gray/30 mb-4" />
-              <h3 className="text-ghost-white text-center">Miembro {member}</h3>
-              <p className="text-ghost-white/60 text-center text-sm mt-2">Rol</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Guadalupe */}
+          <div className="flex flex-col items-center space-y-4">
+            <div className="w-64 h-64 relative overflow-hidden rounded-lg border-2 border-ghost-white/20">
+              <img 
+                src="/lovable-uploads/0f7ff837-39b3-45fe-a9af-a021ae9c0706.png"
+                alt="Silueta Guadalupe"
+                className="w-full h-full object-cover filter grayscale contrast-200"
+              />
             </div>
-          ))}
+            <div className="text-center">
+              <h2 className="text-xl font-bold text-ghost-white">Guadalupe Gonzalez</h2>
+              <p className="text-ghost-white/60 italic">Periodista</p>
+            </div>
+          </div>
+
+          {/* Mariano */}
+          <div className="flex flex-col items-center space-y-4">
+            <div className="w-64 h-64 relative overflow-hidden rounded-lg border-2 border-ghost-white/20">
+              <img 
+                src="/lovable-uploads/photo-1581092795360-fd1ca04f0952"
+                alt="Silueta Mariano"
+                className="w-full h-full object-cover filter grayscale contrast-200"
+              />
+            </div>
+            <div className="text-center">
+              <h2 className="text-xl font-bold text-ghost-white">Mariano Moreno</h2>
+              <p className="text-ghost-white/60 italic">Psicólogo</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
