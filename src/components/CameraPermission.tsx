@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 interface CameraPermissionProps {
   onComplete: () => void;
@@ -9,41 +9,43 @@ const CameraPermission = ({ onComplete }: CameraPermissionProps) => {
   const [isRequesting, setIsRequesting] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
 
-  useEffect(() => {
-    requestCamera();
-  }, []);
+  const completeProcess = useCallback(() => {
+    console.log("Completing camera permission process...");
+    setShowMessage(true);
+    setTimeout(() => {
+      console.log("Calling onComplete...");
+      onComplete();
+    }, 2000);
+  }, [onComplete]);
 
-  const requestCamera = async () => {
-    setIsRequesting(true);
-    
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      stream.getTracks().forEach(track => track.stop());
+  useEffect(() => {
+    const requestCamera = async () => {
+      setIsRequesting(true);
       
-      document.body.classList.add("animate-flash");
-      const flash = new Audio("/camera_shutter.mp3");
-      await flash.play();
-      
-      setIsRequesting(false);
-      setShowMessage(true);
-      
-      setTimeout(() => {
-        document.body.classList.remove("animate-flash");
-        onComplete();
-      }, 2000);
-      
-    } catch (error) {
-      const interference = new Audio("/interference.mp3");
-      await interference.play();
-      
-      setIsRequesting(false);
-      setShowMessage(true);
-      
-      setTimeout(() => {
-        onComplete();
-      }, 2000);
-    }
-  };
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        stream.getTracks().forEach(track => track.stop());
+        
+        const flash = new Audio("/camera_shutter.mp3");
+        await flash.play();
+        
+        document.body.classList.add("animate-flash");
+        setTimeout(() => {
+          document.body.classList.remove("animate-flash");
+        }, 1000);
+        
+      } catch (error) {
+        console.log("Camera permission denied");
+        const interference = new Audio("/interference.mp3");
+        await interference.play();
+      } finally {
+        setIsRequesting(false);
+        completeProcess();
+      }
+    };
+
+    requestCamera();
+  }, [completeProcess]);
 
   return (
     <div className="fixed inset-0 bg-ghost-black bg-opacity-90 flex items-center justify-center z-50">
@@ -53,7 +55,7 @@ const CameraPermission = ({ onComplete }: CameraPermissionProps) => {
             Para ver la verdad, primero hay que mirar.
           </p>
           <p className="text-ghost-white text-xl">
-            El Fotógrapher quierte verte. ¿Aceptás?
+            El Fotógrapher quiere verte. ¿Aceptás?
           </p>
         </div>
       )}

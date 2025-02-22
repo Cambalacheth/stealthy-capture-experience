@@ -14,6 +14,7 @@ const Index = () => {
   };
 
   const handlePermissionComplete = () => {
+    console.log("Navigating to main...");
     navigate("/main");
   };
 
