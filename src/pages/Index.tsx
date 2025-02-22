@@ -14,7 +14,9 @@ const Index = () => {
   };
 
   const handlePermissionComplete = () => {
-    navigate("/main");
+    setTimeout(() => {
+      navigate("/main");
+    }, 500); // Pequeño delay adicional para asegurar que las animaciones terminen
   };
 
   return (

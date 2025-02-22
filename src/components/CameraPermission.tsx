@@ -30,7 +30,7 @@ const CameraPermission = ({ onComplete }: CameraPermissionProps) => {
         document.body.classList.remove("animate-flash");
         setShowMessage(false);
         onComplete();
-      }, 1000);
+      }, 2000);
       
     } catch (error) {
       // Interference effect for denied permission
@@ -41,7 +41,7 @@ const CameraPermission = ({ onComplete }: CameraPermissionProps) => {
       setTimeout(() => {
         setShowMessage(false);
         onComplete();
-      }, 1500);
+      }, 2000);
     } finally {
       setIsRequesting(false);
     }
