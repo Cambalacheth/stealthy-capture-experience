@@ -1,0 +1,22 @@
+
+import { Shield } from "lucide-react";
+
+const Rights = () => {
+  return (
+    <div className="min-h-screen bg-ghost-black flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-4xl bg-ghost-black/80 border-2 border-ghost-white/20 rounded-xl p-8 backdrop-blur-sm">
+        <div className="flex items-center gap-4 mb-8">
+          <Shield className="w-8 h-8 text-ghost-white" />
+          <h1 className="text-4xl font-bold text-ghost-white">Los Derechos</h1>
+        </div>
+        <div className="space-y-6 text-ghost-white/80">
+          <p>© 2024 El Fotógrapher. Todos los derechos reservados.</p>
+          <p>Las imágenes, textos y contenido multimedia presentes en esta aplicación están protegidos por leyes de derechos de autor.</p>
+          <p>Cualquier uso no autorizado del contenido puede resultar en acciones legales.</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Rights;
