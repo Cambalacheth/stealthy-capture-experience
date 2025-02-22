@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import RandomMessage from "@/components/RandomMessage";
 import CameraPermission from "@/components/CameraPermission";
 import BackgroundImage from "@/components/BackgroundImage";
@@ -7,6 +8,7 @@ import BackgroundImage from "@/components/BackgroundImage";
 const Index = () => {
   const [showPermission, setShowPermission] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogoClick = () => {
     setShowPermission(true);
@@ -14,6 +16,15 @@ const Index = () => {
 
   const handlePermissionComplete = () => {
     setShowContent(true);
+  };
+
+  const handlePostItClick = (route: string) => {
+    // Reproducir sonido de papel
+    const paperSound = new Audio("/paper_sound.mp3");
+    paperSound.play();
+    
+    // Navegar a la ruta correspondiente
+    navigate(route);
   };
 
   if (showContent) {
@@ -37,52 +48,82 @@ const Index = () => {
         
         {/* Post-its container */}
         <div className="relative z-10 min-h-screen p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-center justify-items-center">
-          {/* Post-it 1 */}
+          {/* Trailer Post-it */}
           <div className="transform rotate-[-2deg] hover:rotate-0 transition-all duration-300">
-            <div className="w-64 h-64 bg-[#fef7cd] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer">
+            <div 
+              onClick={() => handlePostItClick("/trailer")}
+              className="w-64 h-64 bg-[#fef7cd] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
+            >
               <div className="absolute top-0 left-0 w-full h-8 bg-[#fef7cd]/80" />
               <p className="font-mono text-ghost-black mt-4 transform -rotate-1">
-                "Las historias más oscuras se cuentan en blanco y negro..."
+                "Trailer"
+              </p>
+              <p className="font-mono text-xs text-ghost-black/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300">
+                "Un vistazo a lo que nunca debimos ver..."
               </p>
             </div>
           </div>
           
-          {/* Post-it 2 */}
+          {/* Equipo Post-it */}
           <div className="transform rotate-[1deg] hover:rotate-0 transition-all duration-300">
-            <div className="w-64 h-64 bg-[#f2fce2] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer">
+            <div 
+              onClick={() => handlePostItClick("/equipo")}
+              className="w-64 h-64 bg-[#f2fce2] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
+            >
               <div className="absolute top-0 right-0 w-full h-8 bg-[#f2fce2]/80" />
               <p className="font-mono text-ghost-black mt-4 transform rotate-1">
-                "Cada flash es un instante robado a la eternidad..."
+                "Equipo"
+              </p>
+              <p className="font-mono text-xs text-ghost-black/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300">
+                "¿Quién está detrás de todo esto?"
               </p>
             </div>
           </div>
           
-          {/* Post-it 3 */}
+          {/* Derechos Post-it */}
           <div className="transform rotate-[-1deg] hover:rotate-0 transition-all duration-300">
-            <div className="w-64 h-64 bg-[#e2fcf2] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer">
+            <div 
+              onClick={() => handlePostItClick("/derechos")}
+              className="w-64 h-64 bg-[#e2fcf2] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
+            >
               <div className="absolute top-0 left-0 w-full h-8 bg-[#e2fcf2]/80" />
               <p className="font-mono text-ghost-black mt-4">
-                "En cada esquina hay una historia esperando ser revelada..."
+                "Derechos"
+              </p>
+              <p className="font-mono text-xs text-ghost-black/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300">
+                "Si el arte callejero no tiene dueño..."
               </p>
             </div>
           </div>
           
-          {/* Post-it 4 */}
+          {/* Contacto Post-it */}
           <div className="transform rotate-[2deg] hover:rotate-0 transition-all duration-300">
-            <div className="w-64 h-64 bg-[#fce2e2] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer">
+            <div 
+              onClick={() => handlePostItClick("/contacto")}
+              className="w-64 h-64 bg-[#fce2e2] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
+            >
               <div className="absolute top-0 right-0 w-full h-8 bg-[#fce2e2]/80" />
               <p className="font-mono text-ghost-black mt-4 transform -rotate-1">
-                "El arte no pide permiso, solo perdón..."
+                "Contacto"
+              </p>
+              <p className="font-mono text-xs text-ghost-black/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300">
+                "¿Tenés algo que decir?"
               </p>
             </div>
           </div>
           
-          {/* Post-it 5 */}
-          <div className="transform rotate-[-1.5deg] hover:rotate-0 transition-all duration-300">
-            <div className="w-64 h-64 bg-[#e2e2fc] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer">
+          {/* Misterioso Post-it */}
+          <div className="transform rotate-[-1.5deg] hover:rotate-0 transition-all duration-300 animate-pulse">
+            <div 
+              onClick={() => handlePostItClick("/proximamente")}
+              className="w-64 h-64 bg-[#e2e2fc] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
+            >
               <div className="absolute top-0 left-0 w-full h-8 bg-[#e2e2fc]/80" />
-              <p className="font-mono text-ghost-black mt-4">
-                "Algunos secretos solo se revelan en la oscuridad..."
+              <p className="font-mono text-ghost-black mt-4 blur-sm hover:blur-none transition-all duration-500">
+                "🔲"
+              </p>
+              <p className="font-mono text-xs text-ghost-black/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300 blur-sm">
+                "..."
               </p>
             </div>
           </div>
