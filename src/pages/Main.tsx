@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 
 const Main = () => {
@@ -63,79 +62,71 @@ const Main = () => {
           </div>
         </div>
         
-        {/* Team Post-it */}
+        {/* Contact Image */}
         <div className="transform rotate-[1deg] hover:rotate-0 transition-all duration-300">
           <div 
-            onClick={() => handlePostItClick("/team")}
-            className="w-64 h-64 bg-[#fef3bc] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
-            style={{
-              boxShadow: '2px 2px 10px rgba(0,0,0,0.3)'
-            }}
+            onClick={() => handlePostItClick("/contact")}
+            className="w-64 cursor-pointer group relative"
           >
-            <div className="absolute top-0 right-0 w-full h-8 bg-[#fff9c4]/50" />
-            <p className="font-mono text-ghost-gray mt-4 transform rotate-1">
-              "Equipo"
-            </p>
-            <p className="font-mono text-xs text-ghost-gray/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300">
-              "¿Quién está detrás de todo esto?"
-            </p>
+            <img 
+              src="/lovable-uploads/4b650a24-2571-4825-8086-584c47142d80.png"
+              alt="Contact"
+              className="w-full shadow-xl hover:shadow-2xl transition-all duration-300"
+            />
+            <div className="absolute top-0 left-0 w-full h-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <p className="font-mono text-ghost-white text-xl">Contacto</p>
+            </div>
           </div>
         </div>
         
-        {/* Rights Post-it */}
+        {/* Mystery Image */}
         <div className="transform rotate-[-1deg] hover:rotate-0 transition-all duration-300">
           <div 
-            onClick={() => handlePostItClick("/rights")}
-            className="w-64 h-64 bg-[#fef3bc] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
-            style={{
-              boxShadow: '2px 2px 10px rgba(0,0,0,0.3)'
-            }}
+            onClick={() => handlePostItClick("/mystery")}
+            className="w-64 cursor-pointer group relative"
           >
-            <div className="absolute top-0 left-0 w-full h-8 bg-[#fff9c4]/50" />
-            <p className="font-mono text-ghost-gray mt-4">
-              "Derechos"
-            </p>
-            <p className="font-mono text-xs text-ghost-gray/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300">
-              "Si el arte callejero no tiene dueño..."
-            </p>
+            <img 
+              src="/lovable-uploads/a61698d7-00a1-4a30-ad5b-d33b5dbd6b4f.png"
+              alt="Mystery"
+              className="w-full shadow-xl hover:shadow-2xl transition-all duration-300"
+            />
+            <div className="absolute top-0 left-0 w-full h-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <p className="font-mono text-ghost-white text-xl">Misterio</p>
+            </div>
           </div>
         </div>
         
-        {/* Contact Post-it */}
+        {/* Team Image */}
         <div className="transform rotate-[2deg] hover:rotate-0 transition-all duration-300">
           <div 
-            onClick={() => handlePostItClick("/contact")}
-            className="w-64 h-64 bg-[#fef3bc] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
-            style={{
-              boxShadow: '2px 2px 10px rgba(0,0,0,0.3)'
-            }}
+            onClick={() => handlePostItClick("/team")}
+            className="w-64 cursor-pointer group relative"
           >
-            <div className="absolute top-0 right-0 w-full h-8 bg-[#fff9c4]/50" />
-            <p className="font-mono text-ghost-gray mt-4 transform -rotate-1">
-              "Contacto"
-            </p>
-            <p className="font-mono text-xs text-ghost-gray/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300">
-              "¿Tenés algo que decir?"
-            </p>
+            <img 
+              src="/lovable-uploads/14a25997-fcc2-4d7e-9690-762bfa71d24d.png"
+              alt="Team"
+              className="w-full shadow-xl hover:shadow-2xl transition-all duration-300"
+            />
+            <div className="absolute top-0 left-0 w-full h-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <p className="font-mono text-ghost-white text-xl">Equipo</p>
+            </div>
           </div>
         </div>
         
-        {/* Mystery Post-it */}
-        <div className="transform rotate-[-1.5deg] hover:rotate-0 transition-all duration-300 animate-pulse">
+        {/* Rights Image */}
+        <div className="transform rotate-[-1.5deg] hover:rotate-0 transition-all duration-300">
           <div 
-            onClick={() => handlePostItClick("/mystery")}
-            className="w-64 h-64 bg-[#fef3bc] p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden cursor-pointer group"
-            style={{
-              boxShadow: '2px 2px 10px rgba(0,0,0,0.3)'
-            }}
+            onClick={() => handlePostItClick("/rights")}
+            className="w-64 cursor-pointer group relative"
           >
-            <div className="absolute top-0 left-0 w-full h-8 bg-[#fff9c4]/50" />
-            <p className="font-mono text-ghost-gray mt-4 blur-sm hover:blur-none transition-all duration-500">
-              "🔲"
-            </p>
-            <p className="font-mono text-xs text-ghost-gray/70 mt-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300 blur-sm">
-              "..."
-            </p>
+            <img 
+              src="/lovable-uploads/ee571921-3630-4a7d-b1a1-3927547fa64b.png"
+              alt="Rights"
+              className="w-full shadow-xl hover:shadow-2xl transition-all duration-300"
+            />
+            <div className="absolute top-0 left-0 w-full h-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <p className="font-mono text-ghost-white text-xl">Derechos</p>
+            </div>
           </div>
         </div>
       </div>
