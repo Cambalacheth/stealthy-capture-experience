@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 interface CameraPermissionProps {
   onComplete: () => void;
@@ -31,7 +30,7 @@ const CameraPermission = ({ onComplete }: CameraPermissionProps) => {
         document.body.classList.remove("animate-flash");
         setShowMessage(false);
         onComplete();
-      }, 500);
+      }, 1000);
       
     } catch (error) {
       // Interference effect for denied permission
@@ -43,9 +42,9 @@ const CameraPermission = ({ onComplete }: CameraPermissionProps) => {
         setShowMessage(false);
         onComplete();
       }, 1500);
+    } finally {
+      setIsRequesting(false);
     }
-    
-    setIsRequesting(false);
   };
 
   return (
