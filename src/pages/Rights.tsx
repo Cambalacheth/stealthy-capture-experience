@@ -10,9 +10,7 @@ const Rights = () => {
           <h1 className="text-4xl font-bold text-ghost-white">Los Derechos</h1>
         </div>
         <div className="space-y-6 text-ghost-white/80">
-          <p>© 2024 El Fotógrapher. Todos los derechos reservados.</p>
-          <p>Las imágenes, textos y contenido multimedia presentes en esta aplicación están protegidos por leyes de derechos de autor.</p>
-          <p>Cualquier uso no autorizado del contenido puede resultar en acciones legales.</p>
+          <p>© 2030 El Fotógrapher. Todos los derechos cuestionados.</p>
         </div>
       </div>
     </div>
