@@ -17,8 +17,8 @@ const Contact = () => {
     
     try {
       await emailjs.send(
-        'service_qnm9a9g', // Service ID - Necesitamos este ID
-        'template_5u0p0ya', // Template ID - Necesitamos este ID
+        'service_bjuj5li', // Tu Service ID
+        'template_fv7cr22', // Tu Template ID
         {
           to_email: 'lautaro.sarni@gmail.com',
           from_name: name,
