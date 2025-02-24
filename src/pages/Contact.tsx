@@ -2,23 +2,35 @@
 import { Mail } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [isSending, setIsSending] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSending(true);
     
     try {
-      const mailtoLink = `mailto:lautaro.sarni@gmail.com?subject=Contacto desde El Fotógrapher&body=Nombre: ${name}%0D%0AEmail: ${email}%0D%0AMensaje: ${message}`;
-      window.location.href = mailtoLink;
+      await emailjs.send(
+        'service_qnm9a9g', // Service ID
+        'template_5u0p0ya', // Template ID
+        {
+          to_email: 'lautaro.sarni@gmail.com',
+          from_name: name,
+          from_email: email,
+          message: message,
+        },
+        'x3H2h3mAe7NblgM_U' // Public Key
+      );
       
       toast({
-        title: "Correo preparado",
-        description: "Se abrirá tu cliente de correo para enviar el mensaje.",
+        title: "Mensaje enviado",
+        description: "Tu mensaje ha sido enviado exitosamente.",
       });
       
       // Limpiar el formulario
@@ -30,8 +42,10 @@ const Contact = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Hubo un problema al intentar enviar el mensaje.",
+        description: "Hubo un problema al intentar enviar el mensaje. Por favor intenta nuevamente.",
       });
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -74,9 +88,10 @@ const Contact = () => {
               />
               <button
                 type="submit"
-                className="w-full bg-ghost-white/10 hover:bg-ghost-white/20 text-ghost-white py-3 rounded-lg transition-colors"
+                disabled={isSending}
+                className="w-full bg-ghost-white/10 hover:bg-ghost-white/20 text-ghost-white py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Enviar
+                {isSending ? "Enviando..." : "Enviar"}
               </button>
             </form>
           </div>
