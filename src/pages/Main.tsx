@@ -1,4 +1,6 @@
+
 import { useNavigate } from "react-router-dom";
+import { captureEvent } from "@/providers/PostHogProvider";
 
 const Main = () => {
   const navigate = useNavigate();
@@ -7,6 +9,12 @@ const Main = () => {
     // Reproducir sonido de papel
     const paperSound = new Audio("/paper_sound.mp3");
     paperSound.play();
+    
+    // Capturar evento de clic en PostHog
+    captureEvent('post_it_clicked', { 
+      section: route.replace('/', ''),
+      timestamp: new Date().toISOString()
+    });
     
     // Navegar a la ruta correspondiente
     navigate(route);

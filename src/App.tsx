@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { PostHogProvider } from "./providers/PostHogProvider";
 import Index from "./pages/Index";
 import Main from "./pages/Main";
 import Trailer from "./pages/Trailer";
@@ -21,16 +22,18 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/main" element={<Main />} />
-          <Route path="/trailer" element={<Trailer />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/rights" element={<Rights />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/mystery" element={<Mystery />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <PostHogProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/main" element={<Main />} />
+            <Route path="/trailer" element={<Trailer />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/rights" element={<Rights />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/mystery" element={<Mystery />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </PostHogProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
