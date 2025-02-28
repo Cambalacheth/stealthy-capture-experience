@@ -6,14 +6,14 @@ import { useEffect } from "react";
 import posthog from 'posthog-js';
 import { PostHogProvider as PHProvider } from 'posthog-js/react';
 
-// Constantes para PostHog
+// PostHog constants - match the ones in the HTML
 const POSTHOG_KEY = 'phc_UhNOOcWqzk50rYjZIH2YDDKXgFQtQhax7tGw9o5lQiJ';
 const POSTHOG_HOST = 'https://eu.i.posthog.com';
 
 function PostHogPageView() {
   const location = useLocation();
   
-  // Rastrear vistas de página
+  // Track page views
   useEffect(() => {
     if (location) {
       let url = window.origin + location.pathname;
@@ -30,17 +30,11 @@ function PostHogPageView() {
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    // Inicializar PostHog
-    posthog.init(POSTHOG_KEY, {
-      api_host: POSTHOG_HOST,
-      capture_pageview: false, // Desactivar la captura automática de vistas de página, las capturamos manualmente
-      loaded: (posthog) => {
-        if (import.meta.env.DEV) {
-          // En desarrollo, registramos los eventos en la consola en lugar de enviarlos a PostHog
-          posthog.debug();
-        }
-      }
-    });
+    // We don't need to initialize again since it's already initialized in the HTML
+    // But we can set debug mode in development
+    if (import.meta.env.DEV && window.posthog) {
+      posthog.debug();
+    }
   }, []);
 
   return (
@@ -51,7 +45,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Función de utilidad para enviar eventos manualmente
+// Utility function to send events manually
 export const captureEvent = (eventName: string, properties?: Record<string, any>) => {
   posthog.capture(eventName, properties);
 };
