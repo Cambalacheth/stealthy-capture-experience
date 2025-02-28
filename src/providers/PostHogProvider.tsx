@@ -10,6 +10,13 @@ import { PostHogProvider as PHProvider } from 'posthog-js/react';
 const POSTHOG_KEY = 'phc_UhNOOcWqzk50rYjZIH2YDDKXgFQtQhax7tGw9o5lQiJ';
 const POSTHOG_HOST = 'https://eu.i.posthog.com';
 
+// Extend Window interface to include PostHog
+declare global {
+  interface Window {
+    posthog?: typeof posthog;
+  }
+}
+
 function PostHogPageView() {
   const location = useLocation();
   
