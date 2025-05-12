@@ -6,52 +6,116 @@ import { useAnalytics } from "@/hooks/useAnalytics";
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card";
 
 const Trailer = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const youtubeRef = useRef<HTMLIFrameElement>(null);
   const [videoProgress, setVideoProgress] = useState(0);
   const { trackElementClick, trackTimeSpent } = useAnalytics();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoId = "ur9ThNgVrhU";
 
   // Track page visit and time spent
   useEffect(() => {
     // Track video page load
     captureEvent('video_page_loaded', { 
-      timestamp: new Date().toISOString() 
+      timestamp: new Date().toISOString(),
+      videoId: videoId
     });
     
     // Track time spent on page
     return trackTimeSpent();
   }, [trackTimeSpent]);
 
-  const handleVideoPlay = () => {
-    trackElementClick('video_play_button', {
-      videoSrc: '/intro-video.mp4',
-      currentTime: videoRef.current?.currentTime || 0
-    });
-  };
-  
-  const handleVideoPause = () => {
-    trackElementClick('video_pause_button', {
-      videoSrc: '/intro-video.mp4',
-      currentTime: videoRef.current?.currentTime || 0,
-      progress: `${Math.floor(videoProgress * 100)}%`
-    });
-  };
-  
-  const handleTimeUpdate = () => {
-    if (videoRef.current) {
-      const progress = videoRef.current.currentTime / videoRef.current.duration;
-      setVideoProgress(progress);
-      
-      // Track progress milestones (25%, 50%, 75%, 100%)
-      const percentage = Math.floor(progress * 100);
-      if (percentage === 25 || percentage === 50 || percentage === 75 || percentage === 100) {
-        captureEvent('video_milestone', {
-          percentage: `${percentage}%`,
-          timestamp: new Date().toISOString(),
-          videoSrc: '/intro-video.mp4'
+  // Inicializa la API de YouTube cuando el iframe se carga
+  useEffect(() => {
+    // Función que se llamará cuando la API de YouTube esté lista
+    const onYouTubeIframeAPIReady = () => {
+      if (!window.YT || !youtubeRef.current) return;
+
+      let player: any;
+      let progressInterval: NodeJS.Timeout | null = null;
+
+      try {
+        player = new window.YT.Player(youtubeRef.current, {
+          events: {
+            onReady: () => {
+              // Listo para reproducir
+              trackElementClick('youtube_player_ready', { videoId });
+            },
+            onStateChange: (event: any) => {
+              // Estados: -1 (no iniciado), 0 (terminado), 1 (reproduciendo), 2 (pausado), 3 (buffering), 5 (video en cola)
+              const playerState = event.data;
+              
+              if (playerState === 1) { // reproduciendo
+                setIsPlaying(true);
+                trackElementClick('youtube_video_play', { 
+                  videoId,
+                  currentTime: Math.floor(player.getCurrentTime())
+                });
+                
+                // Iniciar seguimiento del progreso
+                if (progressInterval) clearInterval(progressInterval);
+                progressInterval = setInterval(() => {
+                  if (player && player.getCurrentTime && player.getDuration) {
+                    const currentTime = player.getCurrentTime();
+                    const duration = player.getDuration();
+                    const progress = currentTime / duration;
+                    setVideoProgress(progress);
+                    
+                    // Reportar milestones
+                    const percentage = Math.floor(progress * 100);
+                    if (percentage === 25 || percentage === 50 || percentage === 75 || percentage === 100) {
+                      captureEvent('youtube_video_milestone', {
+                        percentage: `${percentage}%`,
+                        timestamp: new Date().toISOString(),
+                        videoId,
+                        currentTime: Math.floor(currentTime),
+                        duration: Math.floor(duration)
+                      });
+                    }
+                  }
+                }, 1000);
+              } 
+              else if (playerState === 2) { // pausado
+                setIsPlaying(false);
+                if (progressInterval) clearInterval(progressInterval);
+                trackElementClick('youtube_video_pause', {
+                  videoId,
+                  currentTime: Math.floor(player.getCurrentTime()),
+                  progress: `${Math.floor(videoProgress * 100)}%`
+                });
+              }
+              else if (playerState === 0) { // terminado
+                setIsPlaying(false);
+                if (progressInterval) clearInterval(progressInterval);
+                trackElementClick('youtube_video_ended', {
+                  videoId,
+                  duration: Math.floor(player.getDuration())
+                });
+              }
+            }
+          }
         });
+      } catch (error) {
+        console.error("Error inicializando YouTube player:", error);
       }
+
+      return () => {
+        if (progressInterval) clearInterval(progressInterval);
+        if (player && player.destroy) player.destroy();
+      };
+    };
+
+    // Cargar la API de YouTube
+    if (!window.YT) {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+      
+      (window as any).onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+    } else {
+      onYouTubeIframeAPIReady();
     }
-  };
+  }, [trackElementClick, videoId, videoProgress]);
 
   return (
     <div className="min-h-screen bg-ghost-black flex flex-col items-center justify-center p-4">
@@ -66,30 +130,35 @@ const Trailer = () => {
                 className="ml-auto cursor-help text-ghost-white/60 hover:text-ghost-white text-sm"
                 onClick={() => trackElementClick('analytics_help_button')}
               >
-                Analytics enabled
+                Analytics {isPlaying ? 'grabando' : 'habilitado'}
               </div>
             </HoverCardTrigger>
             <HoverCardContent className="w-80 bg-ghost-black border border-ghost-white/20 text-ghost-white p-4">
               <p className="text-sm">
-                We're tracking your interactions with this video to improve the experience.
-                Data collected includes play/pause actions and viewing progress.
+                Estamos registrando tus interacciones con este video para mejorar la experiencia.
+                Los datos recopilados incluyen acciones de reproducción/pausa y progreso de visualización.
               </p>
             </HoverCardContent>
           </HoverCard>
         </div>
         <div className="aspect-video rounded-lg overflow-hidden relative">
-          <video 
-            ref={videoRef}
+          {/* Progress bar overlay */}
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-ghost-white/20">
+            <div 
+              className="h-1 bg-ghost-white transition-all duration-300" 
+              style={{ width: `${videoProgress * 100}%` }}
+            />
+          </div>
+          
+          {/* YouTube iframe */}
+          <iframe
+            ref={youtubeRef}
             className="w-full h-full object-cover"
-            controls
-            onPlay={handleVideoPlay}
-            onPause={handleVideoPause}
-            onTimeUpdate={handleTimeUpdate}
-            poster="/lovable-uploads/03903497-8640-499a-9909-1ae31d4537ac.png"
-          >
-            <source src="/intro-video.mp4" type="video/mp4" />
-            Tu navegador no soporta el elemento de video.
-          </video>
+            src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&origin=${window.location.origin}`}
+            title="Video de introducción"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
         </div>
       </div>
     </div>
