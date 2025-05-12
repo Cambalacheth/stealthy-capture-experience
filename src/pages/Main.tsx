@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { captureEvent } from "@/providers/PostHogProvider";
 
@@ -61,11 +60,11 @@ const Main = () => {
           >
             <img 
               src="/lovable-uploads/03903497-8640-499a-9909-1ae31d4537ac.png"
-              alt="REC Trailer"
+              alt="REC Intro"
               className="w-full shadow-xl hover:shadow-2xl transition-all duration-300"
             />
             <div className="absolute top-0 left-0 w-full h-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <p className="font-mono text-ghost-white text-xl">Ver Trailer</p>
+              <p className="font-mono text-ghost-white text-xl">Ver Intro</p>
             </div>
           </div>
         </div>
