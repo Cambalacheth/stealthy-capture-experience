@@ -75,7 +75,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
           maskInputOptions: {
             password: true, // Pero ocultar contraseñas
           },
-          recordCanvas: true, // Capturar elementos canvas si hay
+          // Removed recordCanvas as it's not supported in the PostHog TypeScript definition
         },
         enable_recording_console_log: true, // Registrar logs de consola
       });

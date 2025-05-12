@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import RandomMessage from "@/components/RandomMessage";
 import CameraPermission from "@/components/CameraPermission";
 import BackgroundImage from "@/components/BackgroundImage";
+import { Button } from "@/components/ui/button";
+import { Home } from "lucide-react";
+import { captureEvent } from "@/providers/PostHogProvider";
 
 const Index = () => {
   const [showPermission, setShowPermission] = useState(false);
@@ -15,6 +18,13 @@ const Index = () => {
 
   const handlePermissionComplete = () => {
     console.log("Navigating to main...");
+    navigate("/main");
+  };
+
+  const goToMainDirectly = () => {
+    captureEvent('skip_permission_click', {
+      timestamp: new Date().toISOString()
+    });
     navigate("/main");
   };
 
@@ -35,6 +45,16 @@ const Index = () => {
           </div>
         </div>
         <RandomMessage />
+        <div className="mt-8">
+          <Button 
+            variant="ghost" 
+            className="text-ghost-white bg-ghost-black/50 hover:bg-ghost-black/70 backdrop-blur-sm"
+            onClick={goToMainDirectly}
+          >
+            <Home className="mr-2 h-4 w-4" />
+            Ir al inicio
+          </Button>
+        </div>
       </div>
       {showPermission && <CameraPermission onComplete={handlePermissionComplete} />}
     </>

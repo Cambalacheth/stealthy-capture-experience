@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { captureEvent } from "@/providers/PostHogProvider";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card";
+import BackButton from "@/components/BackButton";
 
 const Trailer = () => {
   const youtubeRef = useRef<HTMLIFrameElement>(null);
@@ -43,20 +44,21 @@ const Trailer = () => {
             onStateChange: (event: any) => {
               // Estados: -1 (no iniciado), 0 (terminado), 1 (reproduciendo), 2 (pausado), 3 (buffering), 5 (video en cola)
               const playerState = event.data;
+              const playerInstance = event.target; // Get the actual player instance
               
               if (playerState === 1) { // reproduciendo
                 setIsPlaying(true);
                 trackElementClick('youtube_video_play', { 
                   videoId,
-                  currentTime: Math.floor(player.getCurrentTime())
+                  currentTime: Math.floor(playerInstance.getCurrentTime())
                 });
                 
                 // Iniciar seguimiento del progreso
                 if (progressInterval) clearInterval(progressInterval);
                 progressInterval = setInterval(() => {
-                  if (player && player.getCurrentTime && player.getDuration) {
-                    const currentTime = player.getCurrentTime();
-                    const duration = player.getDuration();
+                  if (playerInstance && typeof playerInstance.getCurrentTime === 'function' && typeof playerInstance.getDuration === 'function') {
+                    const currentTime = playerInstance.getCurrentTime();
+                    const duration = playerInstance.getDuration();
                     const progress = currentTime / duration;
                     setVideoProgress(progress);
                     
@@ -79,7 +81,7 @@ const Trailer = () => {
                 if (progressInterval) clearInterval(progressInterval);
                 trackElementClick('youtube_video_pause', {
                   videoId,
-                  currentTime: Math.floor(player.getCurrentTime()),
+                  currentTime: Math.floor(playerInstance.getCurrentTime()),
                   progress: `${Math.floor(videoProgress * 100)}%`
                 });
               }
@@ -88,7 +90,7 @@ const Trailer = () => {
                 if (progressInterval) clearInterval(progressInterval);
                 trackElementClick('youtube_video_ended', {
                   videoId,
-                  duration: Math.floor(player.getDuration())
+                  duration: Math.floor(playerInstance.getDuration())
                 });
               }
             }
@@ -119,6 +121,7 @@ const Trailer = () => {
 
   return (
     <div className="min-h-screen bg-ghost-black flex flex-col items-center justify-center p-4">
+      <BackButton position="top-left" />
       <div className="w-full max-w-4xl bg-ghost-black/80 border-2 border-ghost-white/20 rounded-xl p-8 backdrop-blur-sm">
         <div className="flex items-center gap-4 mb-8">
           <Film className="w-8 h-8 text-ghost-white" />

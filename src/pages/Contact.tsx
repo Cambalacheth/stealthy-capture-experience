@@ -3,6 +3,7 @@ import { Mail } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import emailjs from '@emailjs/browser';
+import BackButton from "@/components/BackButton";
 
 const Contact = () => {
   const [name, setName] = useState("");
@@ -51,6 +52,7 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-ghost-black flex flex-col items-center justify-center p-4">
+      <BackButton position="top-left" />
       <div className="w-full max-w-4xl bg-ghost-black/80 border-2 border-ghost-white/20 rounded-xl p-8 backdrop-blur-sm">
         <div className="flex items-center gap-4 mb-8">
           <Mail className="w-8 h-8 text-ghost-white" />
