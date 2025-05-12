@@ -13,7 +13,7 @@ const POSTHOG_HOST = 'https://eu.i.posthog.com';
 // Extend Window interface to include PostHog
 declare global {
   interface Window {
-    posthog?: typeof posthog;
+    posthog: typeof posthog;
   }
 }
 
@@ -37,9 +37,16 @@ function PostHogPageView() {
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    // We don't need to initialize again since it's already initialized in the HTML
-    // But we can set debug mode in development
-    if (import.meta.env.DEV && window.posthog) {
+    // Initialize PostHog if it hasn't been initialized already
+    if (!posthog.__loaded) {
+      posthog.init(POSTHOG_KEY, {
+        api_host: POSTHOG_HOST,
+        person_profiles: 'identified_only',
+        capture_pageview: false, // We'll handle pageviews manually
+      });
+    }
+    
+    if (import.meta.env.DEV) {
       posthog.debug();
     }
   }, []);
@@ -52,7 +59,15 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Utility function to send events manually
+// Utility function to send events manually - now properly initialized
 export const captureEvent = (eventName: string, properties?: Record<string, any>) => {
-  posthog.capture(eventName, properties);
+  if (posthog.__loaded) {
+    posthog.capture(eventName, properties);
+  } else {
+    // Queue event for when PostHog is initialized
+    setTimeout(() => {
+      posthog.capture(eventName, properties);
+    }, 100);
+  }
 };
+

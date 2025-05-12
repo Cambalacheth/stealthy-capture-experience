@@ -1,15 +1,31 @@
 import { useNavigate } from "react-router-dom";
 import { captureEvent } from "@/providers/PostHogProvider";
+import { useAnalytics } from "@/hooks/useAnalytics";
+import { useEffect } from "react";
 
 const Main = () => {
   const navigate = useNavigate();
+  const { trackElementClick, trackTimeSpent } = useAnalytics();
+
+  // Track time spent on main page
+  useEffect(() => {
+    return trackTimeSpent();
+  }, [trackTimeSpent]);
 
   const handlePostItClick = (route: string) => {
     // Reproducir sonido de papel
     const paperSound = new Audio("/paper_sound.mp3");
     paperSound.play();
     
-    // Capturar evento de clic en PostHog
+    // Track click with more detailed data
+    trackElementClick('post_it', { 
+      section: route.replace('/', ''),
+      timestamp: new Date().toISOString(),
+      referrer: document.referrer,
+      userAgent: navigator.userAgent
+    });
+    
+    // Keep original tracking for backwards compatibility
     captureEvent('post_it_clicked', { 
       section: route.replace('/', ''),
       timestamp: new Date().toISOString()
@@ -18,6 +34,34 @@ const Main = () => {
     // Navegar a la ruta correspondiente
     navigate(route);
   };
+
+  // Track mouse movement heatmap data
+  useEffect(() => {
+    let lastSent = Date.now();
+    const movementSampleRate = 2000; // milliseconds
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      const now = Date.now();
+      // Only sample data every 2 seconds to avoid overwhelming analytics
+      if (now - lastSent > movementSampleRate) {
+        const x = e.clientX;
+        const y = e.clientY;
+        const normalizedX = Math.round((x / window.innerWidth) * 100);
+        const normalizedY = Math.round((y / window.innerHeight) * 100);
+        
+        captureEvent('mouse_position', {
+          x: normalizedX,
+          y: normalizedY,
+          timestamp: new Date().toISOString()
+        });
+        
+        lastSent = now;
+      }
+    };
+    
+    document.addEventListener('mousemove', handleMouseMove);
+    return () => document.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#1a2937]">
