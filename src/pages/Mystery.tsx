@@ -1,8 +1,17 @@
 
 import { HelpCircle } from "lucide-react";
 import BackButton from "@/components/BackButton";
+import { useAnalytics } from "@/hooks/useAnalytics";
+import { useEffect } from "react";
 
 const Mystery = () => {
+  const { trackTimeSpent } = useAnalytics();
+
+  // Track time spent on mystery page
+  useEffect(() => {
+    return trackTimeSpent();
+  }, [trackTimeSpent]);
+  
   return (
     <div className="min-h-screen bg-ghost-black flex flex-col items-center justify-center p-4">
       <BackButton position="top-left" />

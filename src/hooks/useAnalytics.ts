@@ -5,6 +5,7 @@ import { captureEvent } from '@/providers/PostHogProvider';
 export function useAnalytics() {
   const [lastMousePosition, setLastMousePosition] = useState({ x: 0, y: 0 });
   const [mouseMovements, setMouseMovements] = useState<Array<{ x: number, y: number, timestamp: number }>>([]);
+  const [clickCount, setClickCount] = useState(0);
   
   // Track when users arrive on a page with timestamp and device info
   useEffect(() => {
@@ -40,16 +41,55 @@ export function useAnalytics() {
     });
   }, []);
   
+  // Enhanced click tracking that counts total clicks
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
+      const newCount = clickCount + 1;
+      setClickCount(newCount);
+      
+      // Track all clicks globally for heatmapping
+      const clickTarget = e.target as HTMLElement;
+      const tagName = clickTarget.tagName.toLowerCase();
+      const className = clickTarget.className;
+      const id = clickTarget.id;
+      const text = clickTarget.textContent?.slice(0, 30);
+      
+      captureEvent('global_click', {
+        count: newCount,
+        position: {
+          x: e.clientX, 
+          y: e.clientY,
+          relativeX: Math.round((e.clientX / window.innerWidth) * 100), 
+          relativeY: Math.round((e.clientY / window.innerHeight) * 100)
+        },
+        target: {
+          tagName,
+          className: typeof className === 'string' ? className : 'complex-class',
+          id: id || undefined,
+          text: text || undefined
+        },
+        timestamp: new Date().toISOString(),
+        path: window.location.pathname,
+        sessionClickCount: newCount
+      });
+    };
+    
+    document.addEventListener('click', handleGlobalClick);
+    return () => document.removeEventListener('click', handleGlobalClick);
+  }, [clickCount]);
+  
   // Track clicks on specific elements
   const trackElementClick = useCallback((elementName: string, additionalProps?: Record<string, any>) => {
+    setClickCount(prev => prev + 1);
     captureEvent('element_clicked', {
       elementName,
       timestamp: new Date().toISOString(),
       path: window.location.pathname,
       position: lastMousePosition,
+      clickCount,
       ...additionalProps
     });
-  }, [lastMousePosition]);
+  }, [lastMousePosition, clickCount]);
   
   // Track form submissions
   const trackFormSubmission = useCallback((formName: string, formData?: Record<string, any>) => {
@@ -168,16 +208,18 @@ export function useAnalytics() {
         seconds: Math.floor(timeSpent / 1000),
         path: window.location.pathname,
         timestamp: new Date().toISOString(),
-        isIdle
+        isIdle,
+        totalClicks: clickCount
       });
     };
-  }, []);
+  }, [clickCount]);
   
   return {
     trackElementClick,
     trackFormSubmission,
     trackTimeSpent,
     lastMousePosition,
-    mouseMovements
+    mouseMovements,
+    clickCount
   };
 }
