@@ -3,7 +3,9 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
-import type { ViteDevServer, Connect } from "vite";
+import type { ViteDevServer } from "vite";
+import type { IncomingMessage, ServerResponse } from "http";
+import type { NextFunction } from "connect";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -21,7 +23,7 @@ export default defineConfig(({ mode }) => ({
     {
       name: 'spa-fallback',
       configureServer(server: ViteDevServer) {
-        server.middlewares.use((req: Connect.IncomingMessage, res: Connect.ServerResponse, next: Connect.NextFunction) => {
+        server.middlewares.use((req: IncomingMessage, res: ServerResponse, next: NextFunction) => {
           if (req.url && !req.url.includes('.') && !req.url.startsWith('/api')) {
             req.url = '/';
           }
