@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useLocation } from "react-router-dom";
@@ -6,8 +5,8 @@ import { useEffect } from "react";
 import posthog from 'posthog-js';
 import { PostHogProvider as PHProvider } from 'posthog-js/react';
 
-// PostHog constants - match the ones in the HTML
-const POSTHOG_KEY = 'phc_UhNOOcWqzk50rYjZIH2YDDKXgFQtQhax7tGw9o5lQiJ';
+// PostHog constants - updated API key
+const POSTHOG_KEY = 'phx_brZ9eDNnP2FT72rz08nA701MYdRZNoBEn1ZcynSa2oYybR8';
 const POSTHOG_HOST = 'https://eu.i.posthog.com';
 
 // Extiende la interfaz Window para incluir la API de YouTube

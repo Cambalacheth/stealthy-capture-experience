@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { captureEvent } from "@/providers/PostHogProvider";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Instagram } from "lucide-react";
 
 const Main = () => {
   const navigate = useNavigate();
@@ -62,6 +64,15 @@ const Main = () => {
     document.addEventListener('mousemove', handleMouseMove);
     return () => document.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+  const handleInstagramClick = () => {
+    captureEvent('social_media_click', {
+      platform: 'instagram',
+      from_page: window.location.pathname,
+      timestamp: new Date().toISOString()
+    });
+    window.open("https://www.instagram.com/el_fotographer/", "_blank");
+  };
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#1a2937]">
@@ -180,6 +191,19 @@ const Main = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Instagram button */}
+      <div className="fixed top-4 right-4 z-50">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleInstagramClick}
+          className="text-ghost-white bg-ghost-black/50 hover:bg-ghost-black/70 backdrop-blur-sm"
+        >
+          <Instagram className="mr-2 h-4 w-4" />
+          Instagram
+        </Button>
       </div>
 
       {/* Background graffiti and urban art */}
