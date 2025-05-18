@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useLocation } from "react-router-dom";
@@ -6,10 +7,10 @@ import posthog from 'posthog-js';
 import { PostHogProvider as PHProvider } from 'posthog-js/react';
 
 // PostHog constants - updated API key
-const POSTHOG_KEY = 'phx_brZ9eDNnP2FT72rz08nA701MYdRZNoBEn1ZcynSa2oYybR8';
+const POSTHOG_KEY = 'phc_Vua2m59smlUgzwxInayKRpW9Y58BTK6OukCamIJasAa';
 const POSTHOG_HOST = 'https://eu.i.posthog.com';
 
-// Extiende la interfaz Window para incluir la API de YouTube
+// Extend Window interface to include YouTube API
 declare global {
   interface Window {
     posthog: typeof posthog;
@@ -38,13 +39,12 @@ function PostHogPageView() {
           width: window.innerWidth,
           height: window.innerHeight
         },
-        // Identificar si es móvil/tablet/desktop
         deviceType: getDeviceType()
       });
     }
   }, [location]);
 
-  // Helper para determinar el tipo de dispositivo
+  // Helper to determine device type
   const getDeviceType = () => {
     const userAgent = navigator.userAgent;
     if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(userAgent)) {
@@ -65,28 +65,26 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
     if (!posthog.__loaded) {
       posthog.init(POSTHOG_KEY, {
         api_host: POSTHOG_HOST,
-        person_profiles: 'identified_only',
         capture_pageview: false, // We'll handle pageviews manually
-        persistence: 'localStorage+cookie', // Usar localStorage y cookies para mejor persistencia
-        capture_pageleave: true, // Capturar cuando los usuarios dejan la página
+        persistence: 'localStorage+cookie', // Use both localStorage and cookies for better persistence
+        capture_pageleave: true, // Track when users leave the page
         session_recording: {
-          maskAllInputs: false, // Grabar entradas de usuario
+          maskAllInputs: false, // Record user inputs
           maskInputOptions: {
-            password: true, // Pero ocultar contraseñas
+            password: true, // But hide passwords
           },
-          // Removed recordCanvas as it's not supported in the PostHog TypeScript definition
         },
-        enable_recording_console_log: true, // Registrar logs de consola
+        enable_recording_console_log: true, // Record console logs
       });
     }
     
-    // Configuración adicional para entornos de desarrollo
+    // Additional configuration for development environments
     if (import.meta.env.DEV) {
       posthog.debug();
-      console.log("PostHog inicializado en modo debug");
+      console.log("PostHog initialized in debug mode");
     }
 
-    // Capturar información adicional sobre el usuario
+    // Capture additional user information
     try {
       posthog.register({
         screen_width: window.screen.width,
@@ -98,7 +96,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
         browser_type: navigator.userAgent,
       });
     } catch (err) {
-      console.error("Error al registrar propiedades en PostHog:", err);
+      console.error("Error registering properties in PostHog:", err);
     }
   }, []);
 
@@ -110,7 +108,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Utility function to send events manually - now properly initialized
+// Utility function to send events manually
 export const captureEvent = (eventName: string, properties?: Record<string, any>) => {
   if (posthog.__loaded) {
     posthog.capture(eventName, {
