@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { PostHogProvider } from "./providers/PostHogProvider";
 import Index from "./pages/Index";
 import Main from "./pages/Main";
@@ -25,17 +25,20 @@ const LoadingScreen = () => (
 
 // Create a scroll to top component to improve navigation
 const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  
   useEffect(() => {
     window.scrollTo(0, 0);
     captureEvent('page_navigation', {
       timestamp: new Date().toISOString(),
-      path: window.location.pathname
+      path: pathname
     });
-  }, [window.location.pathname]);
+  }, [pathname]);
 
   return null;
 };
 
+// Create a proper config for the query client
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -46,31 +49,43 @@ const queryClient = new QueryClient({
   },
 });
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <PostHogProvider>
-          <ScrollToTop />
-          <Suspense fallback={<LoadingScreen />}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/main" element={<Main />} />
-              <Route path="/trailer" element={<Trailer />} />
-              <Route path="/team" element={<Team />} />
-              <Route path="/rights" element={<Rights />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/mystery" element={<Mystery />} />
-              <Route path="/404" element={<NotFound />} />
-              <Route path="*" element={<Navigate replace to="/404" />} />
-            </Routes>
-          </Suspense>
-        </PostHogProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+// Main App component
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <PostHogProvider>
+            <Suspense fallback={<LoadingScreen />}>
+              <AppRoutes />
+            </Suspense>
+          </PostHogProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
+
+// Separate routes component to use the useLocation hook
+const AppRoutes = () => {
+  return (
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/main" element={<Main />} />
+        <Route path="/trailer" element={<Trailer />} />
+        <Route path="/team" element={<Team />} />
+        <Route path="/rights" element={<Rights />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/mystery" element={<Mystery />} />
+        <Route path="/404" element={<NotFound />} />
+        <Route path="*" element={<Navigate replace to="/404" />} />
+      </Routes>
+    </>
+  );
+};
 
 export default App;
