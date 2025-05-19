@@ -10,7 +10,7 @@ import { PostHogProvider as PHProvider } from 'posthog-js/react';
 const POSTHOG_KEY = 'phc_usuvjrfhAg0rcyzxMHfXDATEVIUOG5nFkVDSuYdOhZ';
 const POSTHOG_HOST = 'https://us.i.posthog.com';
 
-// Extend Window interface to include YouTube API
+// Extend Window interface to include PostHog
 declare global {
   interface Window {
     posthog: typeof posthog;
@@ -19,12 +19,13 @@ declare global {
   }
 }
 
+// Dedicated component for tracking page views
 function PostHogPageView() {
   const location = useLocation();
   
-  // Track page views
+  // Track page views on location changes
   useEffect(() => {
-    if (location) {
+    if (location && posthog.__loaded) {
       let url = window.origin + location.pathname;
       if (location.search) {
         url = url + location.search;
