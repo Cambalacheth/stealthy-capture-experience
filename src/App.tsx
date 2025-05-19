@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { PostHogProvider } from "./providers/PostHogProvider";
+import { PostHogProvider, captureEvent } from "./providers/PostHogProvider";
 import Index from "./pages/Index";
 import Main from "./pages/Main";
 import Trailer from "./pages/Trailer";
@@ -14,7 +14,6 @@ import Contact from "./pages/Contact";
 import Mystery from "./pages/Mystery";
 import NotFound from "./pages/NotFound";
 import { useEffect, lazy, Suspense } from "react";
-import { captureEvent } from "./providers/PostHogProvider";
 
 // Create a loading component for suspense fallback
 const LoadingScreen = () => (
@@ -29,10 +28,13 @@ const ScrollToTop = () => {
   
   useEffect(() => {
     window.scrollTo(0, 0);
+    // PageView is now handled by PostHogPageView component
     captureEvent('page_navigation', {
-      timestamp: new Date().toISOString(),
-      path: pathname
+      path: pathname,
+      timestamp: new Date().toISOString()
     });
+    
+    console.log('Navigation to:', pathname);
   }, [pathname]);
 
   return null;
