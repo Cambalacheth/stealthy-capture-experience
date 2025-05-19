@@ -9,15 +9,13 @@ import type { IncomingMessage } from "http";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
-    host: "::",
+    host: true,
     port: 8080,
-    // Add historyApiFallback to handle client-side routing properly
-    middlewareMode: true,
+    strictPort: false,
   },
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
+    mode === 'development' && componentTagger(),
     // Custom plugin to handle history API fallback for SPA
     {
       name: 'spa-fallback',
