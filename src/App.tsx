@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,9 +13,7 @@ import Rights from "./pages/Rights";
 import Contact from "./pages/Contact";
 import Mystery from "./pages/Mystery";
 import NotFound from "./pages/NotFound";
-import BehindScenes from "./pages/BehindScenes";
 import { useEffect, lazy, Suspense } from "react";
-import { HelmetProvider } from "react-helmet-async";
 
 // Create a loading component for suspense fallback
 const LoadingScreen = () => (
@@ -57,17 +56,15 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <HelmetProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter basename="/">
-            <PostHogProvider>
-              <Suspense fallback={<LoadingScreen />}>
-                <AppRoutes />
-              </Suspense>
-            </PostHogProvider>
-          </BrowserRouter>
-        </HelmetProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter basename="/">
+          <PostHogProvider>
+            <Suspense fallback={<LoadingScreen />}>
+              <AppRoutes />
+            </Suspense>
+          </PostHogProvider>
+        </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
   );
@@ -86,7 +83,6 @@ const AppRoutes = () => {
         <Route path="/rights" element={<Rights />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/mystery" element={<Mystery />} />
-        <Route path="/behind-scenes" element={<BehindScenes />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate replace to="/404" />} />
       </Routes>
