@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import posthog from 'posthog-js';
 import { PostHogProvider as PHProvider } from 'posthog-js/react';
 
-// PostHog constants - updated API key
+// PostHog constants - using the provided API key for US region
 const POSTHOG_KEY = 'phc_usuvjrfhAg0rcyzxMHfXDATEVIUOG5nFkVDSuYdOhZ';
 const POSTHOG_HOST = 'https://us.i.posthog.com';
 
@@ -62,7 +62,7 @@ function PostHogPageView() {
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Initialize PostHog if it hasn't been initialized already
-    if (!posthog.__loaded) {
+    if (!window.posthog || !posthog.__loaded) {
       posthog.init(POSTHOG_KEY, {
         api_host: POSTHOG_HOST,
         capture_pageview: false, // We'll handle pageviews manually
@@ -110,19 +110,25 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 
 // Utility function to send events manually
 export const captureEvent = (eventName: string, properties?: Record<string, any>) => {
-  if (posthog.__loaded) {
-    posthog.capture(eventName, {
-      timestamp: new Date().toISOString(),
-      ...properties
-    });
-  } else {
-    // Queue event for when PostHog is initialized
-    setTimeout(() => {
+  try {
+    if (typeof window !== 'undefined' && window.posthog && posthog.__loaded) {
       posthog.capture(eventName, {
         timestamp: new Date().toISOString(),
-        delayed: true,
         ...properties
       });
-    }, 100);
+    } else {
+      // Queue event for when PostHog is initialized
+      setTimeout(() => {
+        if (typeof window !== 'undefined' && window.posthog) {
+          posthog.capture(eventName, {
+            timestamp: new Date().toISOString(),
+            delayed: true,
+            ...properties
+          });
+        }
+      }, 100);
+    }
+  } catch (error) {
+    console.error("PostHog event capture error:", error);
   }
 };
